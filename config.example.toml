@@ -1,0 +1,44 @@
+# Copy to config.toml and edit. Every key is optional; defaults are shown.
+
+# --- Claude ---------------------------------------------------------------
+model = "claude-haiku-5-5"        # or "claude-sonnet-5-5" / "claude-opus-5-5" (10-40x the cost)
+effort = "low"
+max_tokens = 1024
+web_search = true                 # Anthropic web search: $10 per 1,000 searches + result tokens
+web_search_max_uses = 2
+monthly_budget_usd = 100.0        # Friday stops calling Claude once this month's spend reaches it
+history_turns = 8
+session_idle_reset_s = 300
+# Fixed facts for the system prompt. Keep stable: edits invalidate the prompt cache.
+user_context = """
+Name: Alex. Lives in Berlin; use metric units. Works as a software engineer.
+"""
+
+# Notes Friday should always know (read at startup, cached).
+# context_files = ["~/Documents/work-space/notes/about-me.md"]
+
+# --- Projects & files (read-only) ----------------------------------------------
+file_access = true
+project_roots = ["~/Documents/work-space"]          # auto-discovers projects inside
+file_roots = ["~/Documents", "~/Desktop", "~/Downloads"]
+# editor_app = "Visual Studio Code"                   # used by "show me" / open_file
+# projects = { website = "~/Documents/work-space/personal/portfolio" }   # extra or renamed projects
+
+# --- Wake word & listening --------------------------------------------------
+wake_words = ["friday", "sven", "nora", "veron", "neptune"]   # any words in the Vosk vocabulary
+wake_verify = true                # confirm each wake word with the STT model (fewer false wakes)
+echo_cancellation = true          # Apple voice processing: Friday doesn't hear itself
+barge_in = "auto"                 # "voice" (just talk), "wakeword", or "auto" (voice when AEC is on)
+followup_seconds = 6.0            # answer follow-ups without the wake word
+end_silence_ms = 650              # lower = snappier, but may cut you off mid-pause
+listen_timeout_s = 5.0
+vad_threshold = 0.5
+# Devices apply only when echo_cancellation = false (voice processing uses the system defaults).
+# input_device = "MacBook Air Microphone"   # see: uv run friday --list-devices
+# output_device = "MacBook Air Speakers"
+
+# --- Speech -------------------------------------------------------------------
+stt_model = "mlx-community/parakeet-tdt-0.6b-v2"   # or "mlx-community/whisper-large-v3-turbo" (multilingual)
+tts_engine = "kokoro"             # or "say"
+tts_voice = "bm_george"           # British male; try: uv run friday --voices
+tts_speed = 1.0
